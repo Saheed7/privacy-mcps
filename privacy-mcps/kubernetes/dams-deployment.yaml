@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dams
+  namespace: privacy-mcps
+  labels:
+    app: dams
+    layer: knowledge-aggregation
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dams
+  template:
+    metadata:
+      labels:
+        app: dams
+    spec:
+      containers:
+        - name: dams
+          image: privacy-mcps/dams:latest
+          ports:
+            - containerPort: 50052
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"

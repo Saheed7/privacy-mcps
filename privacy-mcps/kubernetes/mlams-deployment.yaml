@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlams
+  namespace: privacy-mcps
+  labels:
+    app: mlams
+    layer: application
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mlams
+  template:
+    metadata:
+      labels:
+        app: mlams
+    spec:
+      containers:
+        - name: mlams
+          image: privacy-mcps/mlams:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "1000m"
+            limits:
+              memory: "4Gi"
+              cpu: "2000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mlams-service
+  namespace: privacy-mcps
+spec:
+  selector:
+    app: mlams
+  ports:
+    - port: 8080
+      targetPort: 8080
+  type: LoadBalancer

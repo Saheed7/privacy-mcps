@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ams
+  namespace: privacy-mcps
+  labels:
+    app: ams
+    layer: alert
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ams
+  template:
+    metadata:
+      labels:
+        app: ams
+    spec:
+      containers:
+        - name: ams
+          image: privacy-mcps/ams:latest
+          ports:
+            - containerPort: 50053
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"

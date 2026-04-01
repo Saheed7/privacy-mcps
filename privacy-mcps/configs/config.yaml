@@ -1,0 +1,61 @@
+# Main configuration for Privacy-Preserving MCPS Framework
+
+# Dataset settings
+dataset:
+  cic_iomt:
+    path: "data/CIC-IoMT2024.csv"
+    name: "CIC-IoMT2024"
+    n_features: 46
+    n_classes_binary: 2
+    n_classes_multi: 19
+    label_column: "label"
+  edge_iiot:
+    path: "data/Edge-IIoTset.csv"
+    name: "Edge-IIoTset"
+    n_features: 61
+    n_classes_binary: 2
+    n_classes_multi: 15
+    label_column: "Attack_type"
+
+# Preprocessing
+preprocessing:
+  test_size: 0.2
+  random_state: 42
+  scaling: "minmax"          # minmax or standard
+  smote: true
+  smote_random_state: 42
+
+# Distributed settings
+distributed:
+  n_partitions: 6            # M: number of private edge servers
+  n_public_es: 3             # Number of public edge servers
+  n_cloud: 1
+
+# Paillier PHE settings
+paillier:
+  key_length: 2048           # bits (112-bit equivalent security)
+  precision: 8               # Fixed-point encoding decimal places
+
+# Training
+training:
+  batch_size: 64
+  max_epochs: 100
+  learning_rate: 0.001
+  early_stopping_patience: 10
+  optimizer: "adam"
+  validation_split: 0.15
+
+# Evaluation
+evaluation:
+  n_runs: 10                 # For statistical significance
+  significance_level: 0.05   # Alpha for t-tests
+  dp_epsilon_values: [0.0001, 0.001, 0.01, 0.1, 0.5]
+  dp_distributed_epsilon: [0.1, 0.3, 0.5, 0.7]
+  partition_counts: [2, 6, 12, 18, 24]
+
+# Output
+output:
+  model_dir: "results/models"
+  figures_dir: "results/figures"
+  tables_dir: "results/tables"
+  logs_dir: "results/logs"

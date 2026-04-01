@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package mcps;
+
+service InferenceService {
+  rpc Predict (PredictRequest) returns (PredictResponse);
+  rpc HealthCheck (Empty) returns (HealthResponse);
+}
+
+message PredictRequest {
+  repeated float features = 1;
+  string task = 2;  // "binary" or "multiclass"
+}
+
+message PredictResponse {
+  int32 predicted_class = 1;
+  float confidence = 2;
+  string label = 3;
+  repeated float probabilities = 4;
+}
+
+message Empty {}
+
+message HealthResponse {
+  string status = 1;
+  string model_version = 2;
+}

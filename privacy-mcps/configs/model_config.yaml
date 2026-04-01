@@ -1,0 +1,30 @@
+# 1D-CNN-BiGRU-Attention Model Hyperparameters
+
+model:
+  # 1D-CNN layers
+  conv1_filters: 128
+  conv2_filters: 64
+  kernel_size: 3
+  pool_size: 2
+  conv_activation: "relu"
+
+  # BiGRU layer
+  gru_units: 64              # Per direction (total 128 after concat)
+  gru_dropout: 0.0
+  gru_recurrent_dropout: 0.0
+
+  # Multi-Head Self-Attention
+  n_heads: 4
+  d_model: 128               # Must equal 2 * gru_units
+  attention_dropout: 0.0
+
+  # Dense layers
+  dense_units: 64
+  dense_activation: "relu"
+
+  # Regularization
+  dropout_rate: 0.3
+
+  # Output
+  binary_activation: "sigmoid"
+  multi_activation: "softmax"

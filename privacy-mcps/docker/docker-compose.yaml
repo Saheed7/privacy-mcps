@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  etms-1:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.etms
+    container_name: etms-1
+    environment:
+      - PARTITION_ID=0
+      - TOTAL_PARTITIONS=6
+    volumes:
+      - ../data:/app/data
+      - ../results:/app/results
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+
+  etms-2:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.etms
+    container_name: etms-2
+    environment:
+      - PARTITION_ID=1
+      - TOTAL_PARTITIONS=6
+    volumes:
+      - ../data:/app/data
+      - ../results:/app/results
+
+  etms-3:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.etms
+    container_name: etms-3
+    environment:
+      - PARTITION_ID=2
+      - TOTAL_PARTITIONS=6
+    volumes:
+      - ../data:/app/data
+      - ../results:/app/results
+
+  mlams:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.mlams
+    container_name: mlams
+    ports:
+      - "8080:8080"
+    volumes:
+      - ../results/models:/app/results/models
+    depends_on:
+      - etms-1
+      - etms-2
+      - etms-3

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: etms
+  namespace: privacy-mcps
+  labels:
+    app: etms
+    layer: privacy-preserving
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: etms
+  template:
+    metadata:
+      labels:
+        app: etms
+    spec:
+      containers:
+        - name: etms
+          image: privacy-mcps/etms:latest
+          ports:
+            - containerPort: 50051
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "1000m"
+            limits:
+              memory: "4Gi"
+              cpu: "2000m"
+              nvidia.com/gpu: "1"
+          env:
+            - name: TOTAL_PARTITIONS
+              value: "6"
+          volumeMounts:
+            - name: data-vol
+              mountPath: /app/data
+      volumes:
+        - name: data-vol
+          persistentVolumeClaim:
+            claimName: data-pvc
